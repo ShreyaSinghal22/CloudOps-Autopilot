@@ -38,11 +38,11 @@ The project will gradually cover:
 | AWS            | Planned cloud infrastructure |
 
 ---
-
-## 📁 Project Structure
-
-```text
+📂 Project Structure
 CloudOps-Autopilot/
+│
+├── .github/
+│   └── workflows/
 │
 ├── backend/
 │   ├── server.js
@@ -51,331 +51,148 @@ CloudOps-Autopilot/
 │   ├── Dockerfile
 │   └── .dockerignore
 │
-├── docs/
-│   ├── day-01.md
-│   └── day-02.md
+├── monitoring/
+├── scripts/
+├── infrastructure/
 │
+├── compose.yaml
+├── .env.example
+├── .gitignore
 └── README.md
-```
-
 ---
 
-# 🔌 Backend
+💻 Running Locally
 
-The current backend is a Node.js application built using Express.js.
+Follow these steps to run the project on your local machine.
 
-The application runs on port `3000` by default.
-
-## API Endpoints
-
-### `GET /`
-
-Basic application endpoint.
-
-Response:
-
-```text
-Hello
-```
-
-### `GET /health`
-
-Health-check endpoint used to verify that the application is running correctly.
-
-Response:
-
-```text
-Server is healthy
-```
-
-The health endpoint will later be useful for monitoring, automated deployment checks, and cloud infrastructure health checks.
-
----
-
-# 💻 Running Locally
-
-## Prerequisites
+1. Prerequisites
 
 Install:
 
-* Node.js
-* npm
-* Git
-* Docker Desktop
+Git
+Node.js
+Docker Desktop / Docker Engine
+Docker Compose
 
----
+Verify the installations:
 
-## 1. Clone the repository
+git --version
+node --version
+npm --version
+docker --version
+docker compose version
+2. Clone the Repository
+git clone <YOUR_GITHUB_REPOSITORY_URL>
 
-```bash
-git clone <YOUR_REPOSITORY_URL>
-```
+Enter the project:
 
-Navigate into the project:
-
-```bash
 cd CloudOps-Autopilot
-```
+3. Configure Environment Variables
 
----
+Create a local .env file from the provided example:
 
-## 2. Navigate to the backend
+cp .env.example .env
 
-```bash
-cd backend
-```
+On Windows PowerShell, you can use:
 
----
+Copy-Item .env.example .env
 
-## 3. Install dependencies
+Update the values in .env according to your local environment.
 
-```bash
-npm install
-```
+Never commit .env or other files containing secrets.
 
----
+4. Start the Application
 
-## 4. Start the application
+Build and start the services:
 
-```bash
-npm start
-```
+docker compose up --build
 
-The server should start on:
+Or run them in the background:
 
-```text
+docker compose up --build -d
+
+Check running services:
+
+docker compose ps
+5. Verify the Application
+
+The backend should be available at:
+
 http://localhost:3000
-```
 
-Test the application:
+Check the health endpoint:
 
-```text
-http://localhost:3000/
-```
-
-Health check:
-
-```text
 http://localhost:3000/health
-```
 
+You can also check the service logs:
+
+docker compose logs
+
+For the backend specifically:
+
+docker compose logs backend
+6. Stop the Application
+
+Stop the services:
+
+docker compose stop
+
+Remove the Compose environment:
+
+docker compose down
 ---
-
-# 🐳 Running with Docker
-
-The backend is containerized using Docker.
-
-## 1. Build the Docker image
-
-From the `backend` directory:
-
-```bash
-docker build -t cloudops-autopilot .
-```
-
+🏗️ Architecture
+Current
+                    Docker Compose
+                         │
+                ┌────────┴────────┐
+                │                 │
+                ▼                 ▼
+           Node.js API          Redis
+                │                 │
+                └────────┬────────┘
+                         │
+                  Docker Network
+                         │
+                 Health Monitoring
+Target
+                         GitHub
+                            │
+                            ▼
+                       CI/CD Pipeline
+                            │
+                            ▼
+                    Dockerized Application
+                            │
+                            ▼
+                    AWS Infrastructure
+                            │
+                  ┌─────────┴─────────┐
+                  │                   │
+                  ▼                   ▼
+             Application          Monitoring
+                  │                   │
+                  └─────────┬─────────┘
+                            ▼
+                     CloudOps Autopilot
+                            │
+                 Detect → Remediate → Verify
 ---
+📅 Development Progress
 
-## 2. Verify the image
+The project is being developed incrementally.
 
-```bash
-docker images
-```
-
-The image should appear as:
-
-```text
-cloudops-autopilot
-```
-
----
-
-## 3. Run the container
-
-```bash
-docker run -d -p 3000:3000 --name cloudops-autopilot cloudops-autopilot
-```
-
-The application is now available at:
-
-```text
-http://localhost:3000
-```
-
----
-
-## 4. Verify the running container
-
-```bash
-docker ps
-```
-
----
-
-## 5. View container logs
-
-```bash
-docker logs cloudops-autopilot
-```
-
----
-
-# 🧹 Useful Docker Commands
-
-### Stop the container
-
-```bash
-docker stop cloudops-autopilot
-```
-
-### Start the container again
-
-```bash
-docker start cloudops-autopilot
-```
-
-### View running containers
-
-```bash
-docker ps
-```
-
-### View all containers
-
-```bash
-docker ps -a
-```
-
-### View logs
-
-```bash
-docker logs cloudops-autopilot
-```
-
-### Remove the container
-
-```bash
-docker rm cloudops-autopilot
-```
-
-### Remove the image
-
-```bash
-docker rmi cloudops-autopilot
-```
-
----
-
-# 🐳 Docker Configuration
-
-The backend uses a lightweight Node.js Alpine image.
-
-The Dockerfile:
-
-1. Uses Node.js as the base image.
-2. Creates `/app` as the working directory.
-3. Copies npm package files.
-4. Installs production dependencies.
-5. Copies the application source code.
-6. Exposes port `3000`.
-7. Starts the Express server using `npm start`.
-
-The `.dockerignore` file prevents unnecessary files such as:
-
-```text
-node_modules
-.git
-.env
-npm-debug.log
-```
-
-from being included in the Docker build context.
-
----
-
-# 🏗️ Current Architecture
-
-```text
-                    CloudOps Autopilot
-                           │
-                           ▼
-                  Node.js + Express
-                           │
-                       server.js
-                           │
-              ┌────────────┴────────────┐
-              ▼                         ▼
-           GET /                  GET /health
-              │                         │
-              ▼                         ▼
-           "Hello"              Health Status
-              │                         │
-              └────────────┬────────────┘
-                           ▼
-                       Dockerfile
-                           │
-                           ▼
-                    Docker Image
-                           │
-                           ▼
-                  Docker Container
-                           │
-                           ▼
-                    localhost:3000
-```
-
----
-
-# 🗺️ Development Roadmap
-
-## ✅ Day 1 — Environment & Application Setup
-
-* Development environment setup
-* Node.js and npm configuration
-* Express backend setup
-* Basic API endpoints
-* Health-check endpoint
-* Docker Desktop verification
-
-## ✅ Day 2 — Application Containerization
-
-* Dockerfile
-* `.dockerignore`
-* Docker image creation
-* Docker container execution
-* Port mapping
-* Container logs
-* Basic Docker lifecycle
-
-## 🔄 Upcoming
-
-* Docker Compose
-* Multi-service architecture
-* AWS infrastructure
-* Cloud deployment
-* CI/CD
-* Automated deployment
-* Monitoring
-* Logging and observability
-* CloudOps automation
-
----
-
-# 📊 Project Status
-
-**Current Stage:** Dockerized Node.js/Express Backend
-
-The application currently runs successfully both locally and inside a Docker container.
-
-Cloud infrastructure, CI/CD, monitoring, and automation components will be implemented in subsequent stages.
-
----
-
-# 📚 Development Documentation
-
-Detailed development notes are maintained separately:
-
-* [Day 1 — Environment & Application Setup](docs/day-01.md)
-* [Day 2 — Dockerization](docs/day-02.md)
+Day	Milestone	Status
+01	Project structure & foundation	✅
+02	Dockerization	✅
+03	Docker Compose & multi-container setup	✅
+04	AWS infrastructure	🔄
+05	Cloud deployment	🔄
+06	CI/CD pipeline	🔄
+07	Monitoring & observability	🔄
+08	Automated remediation	🔄
+09	Operational intelligence	🔄
+10	Integration, testing & finalization	🔄
 
 ---
 
