@@ -127,16 +127,17 @@ docker compose down
 The project is being developed incrementally.
 
 Day	Milestone	Status
-01	Project structure & foundation	✅
-02	Dockerization	✅
-03	Docker Compose & multi-container setup	✅
-04	AWS infrastructure	🔄
-05	Cloud deployment	🔄
-06	CI/CD pipeline	🔄
-07	Monitoring & observability	🔄
-08	Automated remediation	🔄
-09	Operational intelligence	🔄
-10	Integration, testing & finalization	🔄
+
+#01	Project structure & foundation	✅
+#02	Dockerization	✅
+#03	Docker Compose & multi-container setup	✅
+#04	AWS infrastructure	🔄
+#05	Cloud deployment	🔄
+#06	CI/CD pipeline	🔄
+#07	Monitoring & observability	🔄
+#08	Automated remediation	🔄
+#09	Operational intelligence	🔄
+#10	Integration, testing & finalization	🔄
 
 ---
 
