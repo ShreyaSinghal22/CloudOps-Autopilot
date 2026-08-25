@@ -1,0 +1,15 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: cloudops-backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+  redis:
+    image: redis:7-alpine
+    container_name: cloudops-redis
+
