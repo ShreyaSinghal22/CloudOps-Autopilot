@@ -38,28 +38,6 @@ The project will gradually cover:
 | AWS            | Planned cloud infrastructure |
 
 ---
-📂 Project Structure
-CloudOps-Autopilot/
-│
-├── .github/
-│   └── workflows/
-│
-├── backend/
-│   ├── server.js
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── Dockerfile
-│   └── .dockerignore
-│
-├── monitoring/
-├── scripts/
-├── infrastructure/
-│
-├── compose.yaml
-├── .env.example
-├── .gitignore
-└── README.md
----
 
 💻 Running Locally
 
@@ -140,43 +118,6 @@ docker compose stop
 Remove the Compose environment:
 
 docker compose down
----
-🏗️ Architecture
-Current
-                    Docker Compose
-                         │
-                ┌────────┴────────┐
-                │                 │
-                ▼                 ▼
-           Node.js API          Redis
-                │                 │
-                └────────┬────────┘
-                         │
-                  Docker Network
-                         │
-                 Health Monitoring
-Target
-                         GitHub
-                            │
-                            ▼
-                       CI/CD Pipeline
-                            │
-                            ▼
-                    Dockerized Application
-                            │
-                            ▼
-                    AWS Infrastructure
-                            │
-                  ┌─────────┴─────────┐
-                  │                   │
-                  ▼                   ▼
-             Application          Monitoring
-                  │                   │
-                  └─────────┬─────────┘
-                            ▼
-                     CloudOps Autopilot
-                            │
-                 Detect → Remediate → Verify
 ---
 📅 Development Progress
 
