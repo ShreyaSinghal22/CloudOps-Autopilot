@@ -59,12 +59,14 @@ node --version
 npm --version
 docker --version
 docker compose version
+
 2. Clone the Repository
 git clone <YOUR_GITHUB_REPOSITORY_URL>
 
 Enter the project:
 
 cd CloudOps-Autopilot
+
 3. Configure Environment Variables
 
 Create a local .env file from the provided example:
@@ -109,6 +111,7 @@ docker compose logs
 For the backend specifically:
 
 docker compose logs backend
+
 6. Stop the Application
 
 Stop the services:
