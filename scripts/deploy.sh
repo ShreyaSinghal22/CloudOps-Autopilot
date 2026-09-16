@@ -2,7 +2,9 @@
 # deploy.sh
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Initiating deployment." | tee -a $LOG_FILE
-docker compose up -d --build
+docker pull ghcr.io/shreyasinghal22/cloudops-autopilot:latest
+
+docker compose up -d 
 
 docker image prune -f
 
