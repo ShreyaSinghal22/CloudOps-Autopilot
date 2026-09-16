@@ -1,6 +1,8 @@
 #!/bin/bash
 # deploy.sh
 
+set -e
+
 echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Initiating deployment." | tee -a $LOG_FILE
 docker pull ghcr.io/shreyasinghal22/cloudops-autopilot:latest
 
