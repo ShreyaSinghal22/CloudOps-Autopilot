@@ -4,6 +4,8 @@
 echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Initiating deployment." | tee -a $LOG_FILE
 docker compose up -d --build
 
+docker image prune -f
+
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Deployment failed." | tee -a $LOG_FILE
     exit 1
