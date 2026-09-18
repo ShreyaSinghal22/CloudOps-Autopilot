@@ -45,13 +45,13 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ghcr.io/${{ github.repository_owner }}/cloudops-autopilot:latest \
+            -t ghcr.io/${{ secrets.GHCR_USERNAME }}/cloudops-autopilot:latest \
             ./backend
 
       - name: Push Docker image
         run: |
           docker push \
-            ghcr.io/${{ github.repository_owner }}/cloudops-autopilot:latest
+            ghcr.io/${{ secrets.GHCR_USERNAME }}/cloudops-autopilot:latest
 
   deploy:
 
