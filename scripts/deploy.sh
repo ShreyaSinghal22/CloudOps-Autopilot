@@ -20,7 +20,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Waiting for application to start..."
 
 sleep 10
 
-./scripts/health-check.sh
+bash ./scripts/health-check.sh
 
 if [ $? -eq 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') [DEPLOY] Deployment verified successfully." | tee -a $LOG_FILE
