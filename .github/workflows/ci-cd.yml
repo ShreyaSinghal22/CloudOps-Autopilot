@@ -69,7 +69,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/CloudOps-Autopilot
-            ./deploy.sh
+            ./scripts/deploy.sh
       - name: Verify deployment
         run: |
           sleep 10
