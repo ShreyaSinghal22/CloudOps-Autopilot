@@ -1,8 +1,7 @@
 
 services:
   backend:
-    build:
-      context: ./backend
+    image: ghcr.io/shreyasinghal22/cloudops-autopilot:latest
     container_name: cloudops-backend
     ports:
       - "3000:3000"

@@ -6,7 +6,9 @@ on:
       - main
 
 jobs:
+
   build-test-push:
+
     runs-on: ubuntu-latest
 
     permissions:
@@ -33,7 +35,7 @@ jobs:
         working-directory: backend
         run: npm test
 
-      - name: Log in to GHCR
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -43,10 +45,32 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t ghcr.io/shreyasinghal22/cloudops-autopilot:latest \
+            -t ghcr.io/${{ github.repository_owner }}/cloudops-autopilot:latest \
             ./backend
 
       - name: Push Docker image
         run: |
           docker push \
-            ghcr.io/shreyasinghal22/cloudops-autopilot:latest
+            ghcr.io/${{ github.repository_owner }}/cloudops-autopilot:latest
+
+  deploy:
+
+    needs: build-test-push
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/CloudOps-Autopilot
+            ./deploy.sh
+      - name: Verify deployment
+        run: |
+          sleep 10
+          curl --fail http://${{ secrets.EC2_HOST }}:3000/health
