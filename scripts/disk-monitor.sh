@@ -1,16 +1,16 @@
 #!/bin/bash
 # disk-monitor.sh
 
-THRESHOLD=80
+# 1. Define the log file location so it doesn't fail
+LOG_DIR="../logs"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/disk-monitor.log"
 
+# 2. Extract the raw integer
 DISK_USAGE=$(df / | awk 'NR==2 {print $5}' | tr -d '%')
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') [DISK-USAGE] Current disk usage: $DISK_USAGE%" | tee -a $LOG_FILE
+# 3. Write verbose details quietly to the log file (no 'tee' so it doesn't pollute stdout)
+echo "$(date '+%Y-%m-%d %H:%M:%S') [DISK-USAGE] Current disk usage: $DISK_USAGE%" >> "$LOG_FILE"
 
-if [ "$DISK_USAGE" -ge "$THRESHOLD" ]; then
-    echo "$(date '+%Y-%m-%d %H:%M:%S') [DISK-USAGE] Disk usage is above threshold." | tee -a $LOG_FILE
-    exit 1
-else
-    echo "$(date '+%Y-%m-%d %H:%M:%S') [DISK-USAGE] Disk usage is within safe limits." | tee -a $LOG_FILE
-    exit 0
-fi
+# 4. Print ONLY the raw number so Node.js can easily parse it for the React Dashboard
+echo $DISK_USAGE
